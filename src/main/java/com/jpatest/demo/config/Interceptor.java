@@ -1,4 +1,4 @@
-package com.jpatest.demo.coinfig;
+package com.jpatest.demo.config;
 
 import org.springframework.stereotype.Component;
 import org.springframework.util.ObjectUtils;
