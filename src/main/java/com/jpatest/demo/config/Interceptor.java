@@ -22,10 +22,9 @@ public class Interceptor implements HandlerInterceptor{
         HttpSession session = request.getSession();
         UserVO loginVO = (UserVO) session.getAttribute("loginUser");
         System.out.println("CheckPoint1 :: " + request.getRequestURI());
-        if(request.getRequestURI().indexOf("/asset/") >= 0
-            || request.getRequestURI().indexOf("/css/") >= 0
-            || request.getRequestURI().indexOf("/img/") >= 0
-            || request.getRequestURI().indexOf("/userLogin.do") >= 0
+        // 예외 URI 적용
+        if(request.getRequestURI().indexOf("/userLogin.do") >= 0
+            || request.getRequestURI().indexOf("/loginUser.do") >= 0
             || request.getRequestURI().indexOf("/userRegist.do") >= 0
             || request.getRequestURI().indexOf("/getUserRegist.do") >= 0){
                 session.setMaxInactiveInterval(30*60);
