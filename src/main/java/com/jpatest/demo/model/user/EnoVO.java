@@ -5,8 +5,8 @@ import lombok.*;
 
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@Entity(name="TADM00100")
-public class TADM00100VO {
+@Entity(name="Eno00100")
+public class EnoVO {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -37,7 +37,7 @@ public class TADM00100VO {
     private String chgTm;
 
     @Builder
-    public TADM00100VO(String eno, String enoPw, String celph, String email
+    public EnoVO(String eno, String enoPw, String celph, String email
     , String cretDt, String cretTm, String chgDt, String chgTm){
         this.eno = eno;
         this.enoPw = enoPw;
