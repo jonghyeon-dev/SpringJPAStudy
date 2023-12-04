@@ -5,7 +5,7 @@ import lombok.*;
 
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@Entity(name="Eno00100")
+@Entity(name="TADM00100")
 public class EnoVO {
 
     @Id
