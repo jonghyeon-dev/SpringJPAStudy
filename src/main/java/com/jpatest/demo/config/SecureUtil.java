@@ -8,8 +8,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
 @Component
-public class SecureSHA256 {
-    private Logger logger = LoggerFactory.getLogger(SecureSHA256.class);
+public class SecureUtil {
+    private Logger logger = LoggerFactory.getLogger(SecureUtil.class);
 
     public String encryptSHA256(String text) throws NoSuchAlgorithmException {
         logger.info("SecureSHA256 encryptSHA256");

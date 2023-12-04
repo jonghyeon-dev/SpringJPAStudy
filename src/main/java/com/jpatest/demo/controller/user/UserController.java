@@ -20,7 +20,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import com.jpatest.demo.config.SecureSHA256;
+import com.jpatest.demo.config.SecureUtil;
 import com.jpatest.demo.model.common.ResponseEntity;
 import com.jpatest.demo.model.user.EnoVO;
 import com.jpatest.demo.model.user.UserVO;
@@ -42,7 +42,7 @@ public class UserController {
     private UserLoginRepository userLoginRepository;
 
     @Autowired
-    private SecureSHA256 secureSHA256;
+    private SecureUtil secureSHA256;
 
     private static final int listSize = 10;
 
