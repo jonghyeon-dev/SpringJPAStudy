@@ -21,7 +21,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.jpatest.demo.model.common.ResponseEntity;
-import com.jpatest.demo.model.user.TADM00100VO;
+import com.jpatest.demo.model.user.EnoVO;
 import com.jpatest.demo.repo.UserRepository;
 
 import jakarta.servlet.http.HttpServletRequest;
@@ -51,7 +51,7 @@ public class UserController {
 		LOGGER.info("UserController mainPage View");
 
         PageRequest pageable = PageRequest.of(0, listSize, Sort.by(Direction.DESC, "seq"));
-        Page<TADM00100VO> userInfoList = userRepository.findAll(pageable);
+        Page<EnoVO> userInfoList = userRepository.findAll(pageable);
         model.addAttribute("userInfoList", userInfoList);
         return "main/mainPage";
 	}
@@ -90,7 +90,7 @@ public class UserController {
         LOGGER.info("UserController getUserInfo");
         ResponseEntity js = new ResponseEntity();  
 
-        Page<TADM00100VO> userInfoList;
+        Page<EnoVO> userInfoList;
 
         //Long ID 데이터 Null 체크
         Long seqData = null;
@@ -130,7 +130,7 @@ public class UserController {
         String chgDt = nowDate.format(dateFormatter);
         String chgTm = nowTime.format(timeFormatter);
         try{
-            userRepository.save(TADM00100VO.builder()
+            userRepository.save(EnoVO.builder()
                                 .eno(eno)
                                 .enoPw(enoPw)
                                 .celph(celph)
