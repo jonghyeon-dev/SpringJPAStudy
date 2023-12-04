@@ -13,19 +13,20 @@ import jakarta.servlet.http.HttpSession;
 
 @Component
 public class Interceptor implements HandlerInterceptor{
-     @Override
+    @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler)
             throws Exception {
         HttpSession session = request.getSession();
-        // UserVO loginVO = (UserVO) session.getAttribute("loginUser");
+        UserVO loginVO = (UserVO) session.getAttribute("loginUser");
  
-        // if(ObjectUtils.isEmpty(loginVO)){
-        //     response.sendRedirect("/userLogin.go");
-        //     return false;
-        // }else{
+        if(ObjectUtils.isEmpty(loginVO)){
+            // response.sendRedirect("/userLogin.go");
+            // return false;
+        }else{
             session.setMaxInactiveInterval(30*60);
             return true;
-        // }
+        }
+        return true;
         
     }
  
