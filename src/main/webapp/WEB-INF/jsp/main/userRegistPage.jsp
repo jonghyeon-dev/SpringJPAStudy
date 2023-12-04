@@ -24,9 +24,9 @@
                     </tr>
                     <tr>
                         <th><span>휴대폰번호 :</span></th>
-                        <td><input type="text" name="celph" value="" required="true"></td>
+                        <td><input type="text" name="celph" value=""></td>
                         <th><span>이메일 :</span></th>
-                        <td><input type="email" name="email" value="" required="true"></td>
+                        <td><input type="email" name="email" value=""></td>
                     </tr>
                 </table>
                 <input type="hidden" name="paging" value="0">
