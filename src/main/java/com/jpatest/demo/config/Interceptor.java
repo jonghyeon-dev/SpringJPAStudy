@@ -21,7 +21,6 @@ public class Interceptor implements HandlerInterceptor{
             throws Exception {
         HttpSession session = request.getSession();
         UserVO loginVO = (UserVO) session.getAttribute("loginUser");
-        System.out.println("CheckPoint1 :: " + request.getRequestURI());
         // 예외 URI 적용
         if(request.getRequestURI().indexOf("/userLogin.do") >= 0
             || request.getRequestURI().indexOf("/loginUser.do") >= 0
