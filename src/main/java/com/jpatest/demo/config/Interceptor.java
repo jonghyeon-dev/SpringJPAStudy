@@ -1,5 +1,7 @@
 package com.jpatest.demo.config;
 
+import org.apache.taglibs.standard.lang.jstl.Logger;
+import org.springframework.context.annotation.Configuration;
 import org.springframework.stereotype.Component;
 import org.springframework.util.ObjectUtils;
 import org.springframework.web.servlet.HandlerInterceptor;
@@ -13,12 +15,22 @@ import jakarta.servlet.http.HttpSession;
 
 @Component
 public class Interceptor implements HandlerInterceptor{
+
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler)
             throws Exception {
         HttpSession session = request.getSession();
         UserVO loginVO = (UserVO) session.getAttribute("loginUser");
- 
+        System.out.println("CheckPoint1 :: " + request.getRequestURI());
+        if(request.getRequestURI().indexOf("/asset/") >= 0
+            || request.getRequestURI().indexOf("/css/") >= 0
+            || request.getRequestURI().indexOf("/img/") >= 0
+            || request.getRequestURI().indexOf("/userLogin.do") >= 0
+            || request.getRequestURI().indexOf("/userRegist.do") >= 0
+            || request.getRequestURI().indexOf("/getUserRegist.do") >= 0){
+                session.setMaxInactiveInterval(30*60);
+                return true;
+            }
         if(ObjectUtils.isEmpty(loginVO)){
             response.sendRedirect("/userLogin.do");
             return false;

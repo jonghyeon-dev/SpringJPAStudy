@@ -3,11 +3,12 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
+    <%@include file="../layouts/header.jsp"%> 
 </head>
 <body class="bg-light">
     <div class="container">
         <div>
-            <form id="loginUserForm" method="post" action="<c:url value='/loginUser.do'/>">
+            <form id="loginUserForm" method="post" action="<c:url value='/getUserRegist.do'/>">
                 <table class="table table-bordered">
                     <colgroup>
                         <col width="20%">
@@ -16,15 +17,15 @@
                         <col width="30%">
                     </colgroup>
                     <tr>
-                        <th><span>ID :</span></th>
+                        <th><span>ID *:</span></th>
                         <td><input type="text" name="userId" value="" required="true"></td>
-                        <th><span>PW :</span></th>
+                        <th><span>PW *:</span></th>
                         <td><input type="password" name="userPw" value="" required="true"></td>
                     </tr>
                     <tr>
-                        <th><span>ID :</span></th>
+                        <th><span>휴대폰번호 :</span></th>
                         <td><input type="text" name="celph" value="" required="true"></td>
-                        <th><span>PW :</span></th>
+                        <th><span>이메일 :</span></th>
                         <td><input type="email" name="email" value="" required="true"></td>
                     </tr>
                 </table>

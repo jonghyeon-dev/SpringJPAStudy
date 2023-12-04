@@ -25,7 +25,7 @@
                 </table>
                 <input type="hidden" name="paging" value="0">
                 <button class="btn btn-success" type="submit" id="login">로그인</button>
-                <a href='<c:url value="/joinUser.do"/>' class="btn btn-warning">회원가입</button></a>
+                <a href='<c:url value="/userRegist.do"/>' class="btn btn-warning">회원가입</button></a>
             </form>
         <div>
     </div>

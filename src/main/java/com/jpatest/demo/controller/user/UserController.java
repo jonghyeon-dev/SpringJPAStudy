@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.jpatest.demo.config.SecureSHA256;
 import com.jpatest.demo.model.common.ResponseEntity;
 import com.jpatest.demo.model.user.EnoVO;
 import com.jpatest.demo.model.user.UserVO;
@@ -40,10 +41,13 @@ public class UserController {
     @Autowired
     private UserLoginRepository userLoginRepository;
 
+    @Autowired
+    private SecureSHA256 secureSHA256;
+
     private static final int listSize = 10;
 
     /**
-     * 
+     * 로그인 페이지
      * @param session
      * @param request
      * @param response
@@ -58,6 +62,31 @@ public class UserController {
         return "main/userLoginPage";
 	}
 
+    /**
+     * 회원가입 페이지
+     * @param session
+     * @param request
+     * @param response
+     * @param model
+     * @return
+     * @throws Exception
+     */
+    @GetMapping(value="/userRegist.do")
+	public String UserRegistPage(HttpSession session, HttpServletRequest request, HttpServletResponse response, Model model) throws Exception {
+		LOGGER.info("UserController UserRegistPage");
+
+        return "main/userRegistPage";
+	}
+
+    /**
+     * 로그아웃 기능
+     * @param session
+     * @param request
+     * @param response
+     * @param model
+     * @return
+     * @throws Exception
+     */
     @GetMapping(value="/userLogout.do")
     public String UserLogOut(HttpSession session, HttpServletRequest request, HttpServletResponse response, Model model) throws Exception {
 		LOGGER.info("UserController UserLoginPage");
@@ -67,7 +96,7 @@ public class UserController {
 
 
     /**
-     * 
+     * 메인 페이지
      * @param session
      * @param request
      * @param response
@@ -86,7 +115,7 @@ public class UserController {
 	}
 
     /**
-     * 
+     * 에러 페이지
      * @param session
      * @param request
      * @param response
@@ -94,7 +123,7 @@ public class UserController {
      * @return
      * @throws Exception
      */
-    @GetMapping(value="/error.do")
+    @GetMapping(value="/error/error.do")
 	public String errorPage(HttpSession session, HttpServletRequest request, HttpServletResponse response, Model model) throws Exception {
 		LOGGER.info("UserController errorPage View");
         model.addAttribute("errorCode",request.getAttribute("errorCode"));
@@ -104,8 +133,8 @@ public class UserController {
 
     /**
      * Class UserController
-     * Method getUserController
-     * Info : 사용자 번호(seq), 사용자 ID(eno)를 기반으로 페이징된 사용자 데이터 호출
+     * Method LoginUser
+     * Info : 로그인 정보 체크
      * @param session
      * @param request
      * @param response
@@ -121,7 +150,7 @@ public class UserController {
 
         UserVO userInfo;
         //페이징 세팅
-        userInfo = userLoginRepository.findByUserIdAndUserPwTest(userId, userPw);
+        userInfo = userLoginRepository.findByUserIdAndUserPwTest(userId, secureSHA256.encryptSHA256(userPw));
         if(userInfo != null){
             session.setAttribute("loginUser",userInfo);
             return "redirect:/main.do";
@@ -164,10 +193,21 @@ public class UserController {
         return js;
     }
 
+    /**
+     * Class UserController
+     * Method UserJoin
+     * Info : 사원데이터 추가 페이지
+     * @param session
+     * @param seq
+     * @param eno
+     * @param paging
+     * @return
+     * @throws Exception
+    */
     @GetMapping(value="/userJoin.do")
-    public String userJoin(HttpSession session, HttpServletRequest request
+    public String UserJoin(HttpSession session, HttpServletRequest request
     , HttpServletResponse response, Model model){
-        LOGGER.info("UserController userJoin View");
+        LOGGER.info("UserController UserJoin View");
         return "main/joinPage";
     }
 
@@ -208,14 +248,15 @@ public class UserController {
         return "redirect:/main.do";
     }
 
-    @PostMapping(value="/joinUser.do")
-    public String joinUser(HttpSession session, HttpServletRequest request
+    @PostMapping(value="/getUserRegist.do")
+    public String getUserRegist(HttpSession session, HttpServletRequest request
     , HttpServletResponse response, Model model, RedirectAttributes redirect){
-        LOGGER.info("UserController joinUser");
+        LOGGER.info("UserController getUserRegist");
         LocalDate nowDate = LocalDate.now();
         DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("yyyyMMdd"); 
         LocalTime nowTime = LocalTime.now(); 
         DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern("HHmmss");
+        
         String userId = request.getParameter("userId");
         String userPw = request.getParameter("userPw");
         String celph = request.getParameter("celph");
@@ -227,7 +268,7 @@ public class UserController {
         try{
             userLoginRepository.save(UserVO.builder()
                                 .userId(userId)
-                                .userPw(userPw)
+                                .userPw(secureSHA256.encryptSHA256(userPw))
                                 .celph(celph)
                                 .email(email)
                                 .cretDate(cretDate)
