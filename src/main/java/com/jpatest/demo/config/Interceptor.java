@@ -20,14 +20,12 @@ public class Interceptor implements HandlerInterceptor{
         UserVO loginVO = (UserVO) session.getAttribute("loginUser");
  
         if(ObjectUtils.isEmpty(loginVO)){
-            // response.sendRedirect("/userLogin.go");
-            // return false;
+            response.sendRedirect("/userLogin.do");
+            return false;
         }else{
             session.setMaxInactiveInterval(30*60);
             return true;
         }
-        return true;
-        
     }
  
     @Override

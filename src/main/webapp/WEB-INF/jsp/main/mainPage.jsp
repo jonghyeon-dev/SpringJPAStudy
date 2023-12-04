@@ -10,9 +10,10 @@
         <div class="nav nav-black"> 
               <div class="headTitle"><h2>테스트</h2></div>
               <ul class="navBtn">
-                <li><a href="#">홈</a></li>
-                <li><a href="#">테스트</a></li>
+                <li><a href="<c:url value='/main.do'/>">홈</a></li>
+                <!-- <li><a href="#">테스트</a></li> -->
               </ul>
+              <a class="btn btn-success float-right" href='<c:url value="/userLogout.do"/>'>로그아웃</a>
         </div>
         <div>
             <form class="searchForm" id="searchUserForm">

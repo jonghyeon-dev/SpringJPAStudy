@@ -22,6 +22,8 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.jpatest.demo.model.common.ResponseEntity;
 import com.jpatest.demo.model.user.EnoVO;
+import com.jpatest.demo.model.user.UserVO;
+import com.jpatest.demo.repo.UserLoginRepository;
 import com.jpatest.demo.repo.UserRepository;
 
 import jakarta.servlet.http.HttpServletRequest;
@@ -35,7 +37,34 @@ public class UserController {
     @Autowired
     private UserRepository userRepository;
 
+    @Autowired
+    private UserLoginRepository userLoginRepository;
+
     private static final int listSize = 10;
+
+    /**
+     * 
+     * @param session
+     * @param request
+     * @param response
+     * @param model
+     * @return
+     * @throws Exception
+     */
+    @GetMapping(value="/userLogin.do")
+	public String UserLoginPage(HttpSession session, HttpServletRequest request, HttpServletResponse response, Model model) throws Exception {
+		LOGGER.info("UserController UserLoginPage");
+
+        return "main/userLoginPage";
+	}
+
+    @GetMapping(value="/userLogout.do")
+    public String UserLogOut(HttpSession session, HttpServletRequest request, HttpServletResponse response, Model model) throws Exception {
+		LOGGER.info("UserController UserLoginPage");
+        session.invalidate();
+        return "redirect:/userLogin.do";
+	}
+
 
     /**
      * 
@@ -72,6 +101,35 @@ public class UserController {
         model.addAttribute("errorMsg",request.getAttribute("errorMsg"));
         return "error/errorPage";
 	}
+
+    /**
+     * Class UserController
+     * Method getUserController
+     * Info : 사용자 번호(seq), 사용자 ID(eno)를 기반으로 페이징된 사용자 데이터 호출
+     * @param session
+     * @param request
+     * @param response
+     * @param model
+     * @return
+     * @throws Exception
+    */
+    @PostMapping(value="/loginUser.do")
+    public  String LoginUser(HttpSession session, HttpServletRequest request, HttpServletResponse response, Model model) throws Exception {
+        LOGGER.info("UserController loginUser");
+        String userId = request.getParameter("userId");
+        String userPw = request.getParameter("userPw");
+
+        UserVO userInfo;
+        //페이징 세팅
+        userInfo = userLoginRepository.findByUserIdAndUserPwTest(userId, userPw);
+        if(userInfo != null){
+            session.setAttribute("loginUser",userInfo);
+            return "redirect:/main.do";
+        }
+        model.addAttribute("isSucceed", "false");
+        model.addAttribute("failMsg", "로그인에 실패하였습니다.");
+        return "redirect:/userLogin.do";
+    }
 
     /**
      * Class UserController
@@ -148,5 +206,42 @@ public class UserController {
         }
         redirect.addAttribute("successMsg", "등록 성공");
         return "redirect:/main.do";
+    }
+
+    @PostMapping(value="/joinUser.do")
+    public String joinUser(HttpSession session, HttpServletRequest request
+    , HttpServletResponse response, Model model, RedirectAttributes redirect){
+        LOGGER.info("UserController joinUser");
+        LocalDate nowDate = LocalDate.now();
+        DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("yyyyMMdd"); 
+        LocalTime nowTime = LocalTime.now(); 
+        DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern("HHmmss");
+        String userId = request.getParameter("userId");
+        String userPw = request.getParameter("userPw");
+        String celph = request.getParameter("celph");
+        String email = request.getParameter("email");
+        String cretDate = nowDate.format(dateFormatter);
+        String cretTime = nowTime.format(timeFormatter);
+        String chgDate = nowDate.format(dateFormatter);
+        String chgTime = nowTime.format(timeFormatter);
+        try{
+            userLoginRepository.save(UserVO.builder()
+                                .userId(userId)
+                                .userPw(userPw)
+                                .celph(celph)
+                                .email(email)
+                                .cretDate(cretDate)
+                                .cretTime(cretTime)
+                                .chgDate(chgDate)
+                                .chgTime(chgTime)
+                                .build());
+        }catch(Exception e){
+            LOGGER.info("Error Is : {}",e.getMessage());
+            redirect.addAttribute("errorCode", "ER001");
+            redirect.addAttribute("errorMsg", "joinUser Error Check The Server Log");
+            return "redirect:/errorPage.do";
+        }
+        redirect.addAttribute("successMsg", "등록 성공");
+        return "redirect:/userLogin.do";
     }
 }

@@ -21,6 +21,12 @@
                         <th><span>PW :</span></th>
                         <td><input type="password" name="userPw" value="" required="true"></td>
                     </tr>
+                    <tr>
+                        <th><span>ID :</span></th>
+                        <td><input type="text" name="celph" value="" required="true"></td>
+                        <th><span>PW :</span></th>
+                        <td><input type="email" name="email" value="" required="true"></td>
+                    </tr>
                 </table>
                 <input type="hidden" name="paging" value="0">
                 <button class="btn btn-success" type="submit" id="login">회원가입</button>
