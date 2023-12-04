@@ -16,6 +16,6 @@ public interface UserLoginRepository extends JpaRepository<UserVO, Long> {
                     + "AND u.USER_PW = :userPw"       
             , nativeQuery = true
             )
-    UserVO findByUserIdAndUserPwTest(@Param("userId") String userId, @Param("userPw") String userPw);
+    UserVO CheckUserLogin(@Param("userId") String userId, @Param("userPw") String userPw);
 
 }

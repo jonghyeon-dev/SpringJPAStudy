@@ -150,7 +150,7 @@ public class UserController {
 
         UserVO userInfo;
         //페이징 세팅
-        userInfo = userLoginRepository.findByUserIdAndUserPwTest(userId, secureSHA256.encryptSHA256(userPw));
+        userInfo = userLoginRepository.CheckUserLogin(userId, secureSHA256.encryptSHA256(userPw));
         if(userInfo != null){
             session.setAttribute("loginUser",userInfo);
             return "redirect:/main.do";
@@ -198,11 +198,10 @@ public class UserController {
      * Method UserJoin
      * Info : 사원데이터 추가 페이지
      * @param session
-     * @param seq
-     * @param eno
-     * @param paging
-     * @return
-     * @throws Exception
+     * @param request
+     * @param response
+     * @param model
+     * @return String
     */
     @GetMapping(value="/userJoin.do")
     public String UserJoin(HttpSession session, HttpServletRequest request
@@ -211,6 +210,17 @@ public class UserController {
         return "main/joinPage";
     }
 
+    /**
+     * Class UserController
+     * Method addUser
+     * Info : 사원데이터 추가
+     * @param session
+     * @param request
+     * @param response
+     * @param model
+     * @param redirect
+     * @return String
+    */
     @PostMapping(value="/addUser.do")
     public String addUser(HttpSession session, HttpServletRequest request
     , HttpServletResponse response, Model model, RedirectAttributes redirect){
@@ -248,6 +258,17 @@ public class UserController {
         return "redirect:/main.do";
     }
 
+    /**
+     * Class UserController
+     * Method getUserRegist
+     * Info : 사용자데이터 추가
+     * @param session
+     * @param request
+     * @param response
+     * @param model
+     * @param redirect
+     * @return String
+    */
     @PostMapping(value="/getUserRegist.do")
     public String getUserRegist(HttpSession session, HttpServletRequest request
     , HttpServletResponse response, Model model, RedirectAttributes redirect){
